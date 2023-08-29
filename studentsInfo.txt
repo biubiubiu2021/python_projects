@@ -1,0 +1,4 @@
+{'ID': '11111111', 'NAME': 'caifu1', 'ENGLISH': 1, 'PYTHON': 1, 'C': '7777'}
+{'ID': '11111111', 'NAME': 'caifu1', 'ENGLISH': 1, 'PYTHON': 1, 'C': '00'}
+{'ID': '22222222', 'NAME': 'caifu2', 'ENGLISH': 2, 'PYTHON': 2, 'C': 2}
+{'ID': '33333333', 'NAME': 'caifu3', 'ENGLISH': 3, 'PYTHON': 3, 'C': 3}
