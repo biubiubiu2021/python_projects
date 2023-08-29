@@ -34,6 +34,11 @@ nres_letter = ""
 
 root = tkinter.Tk()
 
+def input_validation(insel):
+    if str.isdigit(insel):
+        if insel == 0:
+            print()
+
 def mkdir(path):
     isExist = os.path.exists(path)
     if not isExist:
