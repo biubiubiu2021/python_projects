@@ -138,9 +138,36 @@ def main():
         0. 退出系统
         ********************************************************************************
         说明： 通过数字选择菜单
-        ********************************************************************************
-        
+        ********************************************************************************     
     \033[0m""")
+
+    while 1 < 9:
+        main()
+        choice = input("\033[1;32m Pls select a function: \033[0m")
+        if len(choice) != 0:
+            choice = input_validation(choice)
+            if choice == 1:
+                scode1(choice)
+            if choice == 2:
+                scode2(choice)
+            if choice == 3:
+                scode1(choice)
+            if choice == 4:
+                scode2(choice)
+            if choice == 5:
+                scode1(choice)
+            if choice == 6:
+                scode2(choice)
+            if choice == 7:
+                scode1(choice)
+            if choice == 8:
+                scode2(choice)
+            if choice == 9:
+                scode2(choice)
+            if choice == 0:
+                i = 0
+                print("\033[1;21;42m  Exist the system! \033[0m")
+
 
 if __name__ == '__main__':
     mkdir('C:\\Users\\caifulai\\PycharmProjects\\python_projects\\project2_producVerify')
