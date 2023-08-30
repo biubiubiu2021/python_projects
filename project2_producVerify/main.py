@@ -37,7 +37,13 @@ root = tkinter.Tk()
 def input_validation(insel):
     if str.isdigit(insel):
         if insel == 0:
-            print()
+            print("\033[1;31[0m Exist the system! \033[0m")
+            return 0
+        else:
+            return insel
+    else:
+        print("\033[1;31;40m  invalid input! pls check  \033[0m")
+        return 0
 
 def mkdir(path):
     isExist = os.path.exists(path)
@@ -137,7 +143,7 @@ def main():
     \033[0m""")
 
 if __name__ == '__main__':
-    mkdir('D:\python_project\project2_producVerify')
+    mkdir('C:\\Users\\caifulai\\PycharmProjects\\python_projects\\project2_producVerify')
     #print(openfile('D:\\python_project\\producVerify\main.py'))
     #print(inputbox("pls input:  ",3,3))
     #wfile("ABCD","scode1.txt",'yes', 'Saved files','D:\python_project\project2_producVerify\\test')
