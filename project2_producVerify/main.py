@@ -16,7 +16,6 @@ from string import digits
 number = '1234567890'
 letter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 allis = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+'
-i=0
 randstr = []
 fourth = []
 fifth = []
@@ -121,7 +120,8 @@ def wfile(sstr,sfile, typeis, smsg, datapath):
 
 
 
-def main():
+def mainmenu():
+    i=0
     print("""\033[1;35m
         ********************************************************************************
                                         企业编码生成系统
@@ -141,8 +141,8 @@ def main():
         ********************************************************************************     
     \033[0m""")
 
-    while 1 < 9:
-        main()
+    while i < 9:
+        #mainmenu()
         choice = input("\033[1;32m Pls select a function: \033[0m")
         if len(choice) != 0:
             choice = input_validation(choice)
@@ -170,8 +170,8 @@ def main():
 
 
 if __name__ == '__main__':
-    mkdir('C:\\Users\\caifulai\\PycharmProjects\\python_projects\\project2_producVerify')
+    mkdir('.\\project2_producVerify')
     #print(openfile('D:\\python_project\\producVerify\main.py'))
     #print(inputbox("pls input:  ",3,3))
     #wfile("ABCD","scode1.txt",'yes', 'Saved files','D:\python_project\project2_producVerify\\test')
-    main()
+    mainmenu()
