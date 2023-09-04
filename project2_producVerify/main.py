@@ -118,7 +118,22 @@ def wfile(sstr,sfile, typeis, smsg, datapath):
         root.withdraw()
         tkinter.messagebox.showinfo("Note:", smsg + str(len(sstr)) + '\n scode file saved in:\n' + datafile)
 
+def scode1(schoice):
+    number = '1234567890'
 
+    randstr = []
+    incount = inputbox("\033[1;32m 请输入您要生成的防伪码数量: \033[0m", 1, 0)
+    while int(incount) == 0:
+        incount = inputbox("\033[1;32m 请输入您要生成的防伪码数量: \033[0m", 1, 0)
+    randstr.clear()
+    for j in range(int(incount)):
+        randfir = ""
+        for i in range(6):
+            randfir = randfir + random.choice(number)
+        randfir = randfir + "\n"
+        randstr.append(randfir)
+    print("----->")
+    wfile(randstr,'scode' + str(schoice)+'.txt', "yes", f"Already generated  6 bits codes, total: {incount}",'.\\files')
 
 def mainmenu():
     i=0
@@ -170,8 +185,10 @@ def mainmenu():
 
 
 if __name__ == '__main__':
-    mkdir('.\\project2_producVerify')
+
+    mkdir('.\\files')
     #print(openfile('D:\\python_project\\producVerify\main.py'))
     #print(inputbox("pls input:  ",3,3))
-    #wfile("ABCD","scode1.txt",'yes', 'Saved files','D:\python_project\project2_producVerify\\test')
-    mainmenu()
+    #wfile("ABCD","scode1.txt",'yes', 'Saved files','.\\test')
+    #mainmenu()
+    scode1(1)
