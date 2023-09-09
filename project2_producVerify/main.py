@@ -40,7 +40,7 @@ def input_validation(insel):
             print("\033[1;31[0m Exist the system! \033[0m")
             return 0
         else:
-            return insel
+            return int(insel)
     else:
         print("\033[1;31;40m  invalid input! pls check  \033[0m")
         return 0
@@ -62,10 +62,11 @@ def openfile(filename):
     return content
 
 
-def inputbox(showstr,showorder, length):
+def inputbox(showstr, showorder, length):
     instr = input(showstr)
     if len(instr) != 0:
-        if showorder ==1:
+        #Three kinds of verification, 1,number,  2,string + length , 3, number +length
+        if showorder == 1:  #number
             if instr.isdigit():
                 print("this is a number")
                 if instr == '0':
@@ -76,7 +77,7 @@ def inputbox(showstr,showorder, length):
             else:
                 print("\033[1;31;40m input is not a valid munber, pls re-try! \033[0m")
                 return '0'
-        if showorder ==2:
+        if showorder == 2: #letter+length
             if instr.isalpha():
                 print("this is a letter")
                 if len(instr) != length:
@@ -87,7 +88,7 @@ def inputbox(showstr,showorder, length):
             else:
                 print("\033[1;31;40m input is not a valid letter, pls re-try! \033[0m")
                 return "0"
-        if showorder ==3:
+        if showorder == 3:#number+length
             if str.isdigit(instr):
                 print("this is a number")
                 if len(instr) != length:
@@ -141,8 +142,31 @@ def scode1(schoice):
     print("----->",incount)
     wfile(randstr,'scode' + str(schoice)+'.txt', "yes", f"Already generated  6 bits codes, total:",'.\\files')
 
+def scode2(schoice):
+    order_start = inputbox("\033[1;32m 请输入系列产品的数字起始号（3位）: \033[0m", 3,3) # showorder =3 means number+lenght, length=3, 3 bits
+    while int(order_start) == 0:
+        order_start = inputbox("\033[1;32m 请输入系列产品的数字起始号（3位）: \033[0m", 3, 3)
+
+    order_count = inputbox("\033[1;32m 请输入产品系列的数量: \033[0m", 1, 0) # showder=3 means number only, but length=0 means no length limitation
+    while int(order_count) < 1 or int(order_count) > 9999: #the number of order should be in 1-9999
+        order_count = inputbox("\033[1;32m 请输入产品系列的数量: \033[0m", 1, 0)
+
+    incount = inputbox("\033[1;32m 请输入要生成的防伪码的数量: \033[0m", 1, 0) # showder=3 means number only,
+    while int(incount) ==0:
+        print("输入不正确，清请输入大于0的整数！")
+        incount = inputbox("\033[1;32m 请输入要生成的防伪码的数量: \033[0m", 1, 0)
+
+    randstr.clear()
+    for m in range(int(order_count)): #产品系列的数量，假如数字起始号order_start=100，产品系列的数量order_cound=3, 则 三个系列的起始号分别为100，101，102
+        for j in range(int(incount)):#incount位产品防伪码数量,
+            randfir = ""
+            for i in range(6):
+                randfir = randfir + random.choice(number)  #每次生成一位随机数，然后添加到防伪码，一共生成6位，组成一个6位防伪码
+            randstr.append(str(int(order_start)+m) + randfir +"\n")  #order_cound +m, 假使第一个数字起始号位123， 则第二个位123+1=124， 完整的防伪码= 3位系列起始号（会安装产品系类数量+1变化）+6位防伪码
+
+    wfile(randstr,"scode"+str(schoice)+".txt","","已生成9位系列产品防伪码共计：",".\\files")
+
 def mainmenu():
-    i=0
     print("""\033[1;35m
         ********************************************************************************
                                         企业编码生成系统
@@ -162,12 +186,16 @@ def mainmenu():
         ********************************************************************************     
     \033[0m""")
 
+def main():
+    i=0
     while i < 9:
-        #mainmenu()
+        mainmenu()
         choice = input("\033[1;32m Pls select a function: \033[0m")
         if len(choice) != 0:
             choice = input_validation(choice)
+            print("---->",choice)
             if choice == 1:
+                print("it is !!!")
                 scode1(choice)
             if choice == 2:
                 scode2(choice)
@@ -186,8 +214,12 @@ def mainmenu():
             if choice == 9:
                 scode2(choice)
             if choice == 0:
-                i = 0
+                i = 10
                 print("\033[1;21;42m  Exist the system! \033[0m")
+                break
+        else:
+            print("\033[1;21;42m  Exist the system! \033[0m")
+            break
 
 
 if __name__ == '__main__':
@@ -196,5 +228,5 @@ if __name__ == '__main__':
     #print(openfile('D:\\python_project\\producVerify\main.py'))
     #print(inputbox("pls input:  ",3,3))
     #wfile("ABCD","scode1.txt",'yes', 'Saved files','.\\test')
-    #mainmenu()
-    scode1(1)
+    main()
+    #scode1(1)
