@@ -5,7 +5,7 @@ import copy
 def menu():
     #print("\n")
     print('''  
-    --------------------Welcome to students management system-----------------------
+    --------------------Welcome to students management system-----------------------7
     |                                                                              |
     |       ==============          Function List          =================       |
     |                                                                              |

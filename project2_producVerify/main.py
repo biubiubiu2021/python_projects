@@ -32,6 +32,7 @@ nres_letter = ""
 
 
 root = tkinter.Tk()
+root.geometry('800x600+100+100')
 
 def input_validation(insel):
     if str.isdigit(insel):
@@ -113,10 +114,15 @@ def wfile(sstr,sfile, typeis, smsg, datapath):
         file.write(wdata)
         pdata = pdata + wdata
     file.close()
-    print("\033[1;31;40m The security code is:",pdata, "\033[0m")
+    print("\033[1;31;40m The security code is:\n",pdata, "\033[0m")
     if typeis != 'no':
+        root.attributes("-topmost", True)
+        root.geometry("800x600")
         root.withdraw()
+        root.quit()
         tkinter.messagebox.showinfo("Note:", smsg + str(len(sstr)) + '\n scode file saved in:\n' + datafile)
+        time.sleep(5)
+
 
 def scode1(schoice):
     number = '1234567890'
@@ -132,8 +138,8 @@ def scode1(schoice):
             randfir = randfir + random.choice(number)
         randfir = randfir + "\n"
         randstr.append(randfir)
-    print("----->")
-    wfile(randstr,'scode' + str(schoice)+'.txt', "yes", f"Already generated  6 bits codes, total: {incount}",'.\\files')
+    print("----->",incount)
+    wfile(randstr,'scode' + str(schoice)+'.txt', "yes", f"Already generated  6 bits codes, total:",'.\\files')
 
 def mainmenu():
     i=0
