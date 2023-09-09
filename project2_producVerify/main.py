@@ -179,6 +179,8 @@ def scode3(schoice):
 
     wfile(randstr, "scode" + str(schoice) + ".txt", "", "已生成25位混合产品序列号共计：", ".\\files")
 
+def scode4(schioce):
+    pass
 
 def mainmenu():
     print("""\033[1;35m
