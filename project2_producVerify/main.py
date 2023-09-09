@@ -166,6 +166,20 @@ def scode2(schoice):
 
     wfile(randstr,"scode"+str(schoice)+".txt","","已生成9位系列产品防伪码共计：",".\\files")
 
+def scode3(schoice):
+    incount = inputbox("\033[1;32m 请输入要生成的25位混合产品序列号数量（25位）: \033[0m", 1,0)
+    while int(incount) == 0:
+        incount = inputbox("\033[1;32m 请输入要生成的25位混合产品序列号数量（25位）: \033[0m", 1, 0)
+    randstr.clear()
+    for j in range(int(incount)):
+        randfir=""
+        for i in range(25):
+            randfir = randfir + random.choice(letter) #get 25 bits data
+        randstr.append(randfir[0:5]+"-"+randfir[5:10]+"-"+randfir[10:15]+"-"+randfir[15:20]+"-"+randfir[20:25]+"\n")
+
+    wfile(randstr, "scode" + str(schoice) + ".txt", "", "已生成25位混合产品序列号共计：", ".\\files")
+
+
 def mainmenu():
     print("""\033[1;35m
         ********************************************************************************
@@ -200,19 +214,19 @@ def main():
             if choice == 2:
                 scode2(choice)
             if choice == 3:
-                scode1(choice)
+                scode3(choice)
             if choice == 4:
-                scode2(choice)
+                scode4(choice)
             if choice == 5:
-                scode1(choice)
+                scode5(choice)
             if choice == 6:
-                scode2(choice)
+                scode6(choice)
             if choice == 7:
-                scode1(choice)
+                scode7(choice)
             if choice == 8:
-                scode2(choice)
+                scode8(choice)
             if choice == 9:
-                scode2(choice)
+                scode9(choice)
             if choice == 0:
                 i = 10
                 print("\033[1;21;42m  Exist the system! \033[0m")
