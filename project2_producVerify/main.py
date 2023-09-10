@@ -41,7 +41,7 @@ def input_validation(insel):
         else:
             return int(insel)
     else:
-        print("\033[1;31;40m  invalid input! pls check  \033[0m")
+        print("\033[1;31;40m  invalid input! pls input number !  \033[0m")
         return 0
 
 
@@ -222,8 +222,15 @@ def ffcode(scount, typestr, ismessage, schoice):
         randstr.append(letterTwo)
     wfile(randstr, typestr + "scode" + str(schoice) + '.txt', ismessage, "生成焓数据分析功能的防伪码统计总共：", ".\\files")
 def scode5(schioce):
-    pass
-
+    default_dir = f".\\files\\batch_configuration.text"
+    filepath = tkinter.filedialog.askopenfilename(filetypes=[("Text files","*.text")], title = u"请选择智能批处理文件：", initialdir=(os.path.expanduser(default_dir)))
+    codelist = openfile(filepath)
+    codelist = codelist.split("\n")
+    print(codelist)
+    for item in codelist:
+        codea = item.split(",")[0]
+        codeb = item.split(",")[1]
+        ffcode(codeb,codea,"no",schioce)
 
 def scode6(schioce):
     pass
@@ -271,7 +278,6 @@ def main():
             choice = input_validation(choice)
             print("---->", choice)
             if choice == 1:
-                print("it is !!!")
                 scode1(choice)
             if choice == 2:
                 scode2(choice)
