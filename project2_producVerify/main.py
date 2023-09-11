@@ -284,8 +284,30 @@ def scode6(schioce):
 
 
 def scode7(schioce):
-    pass
+    countryID = inputbox("\033[1;32m 请输入国家或地区编号（3位数字）: \033[0m", 3, 3)
+    while int(countryID) < 1 or len(countryID) !=3:
+        countryID = inputbox("\033[1;32m 请输入国家或地区编号（3位数字）: \033[0m", 3, 3)
+    companyID = inputbox("\033[1;32m 请输入企业编号（4位数字）: \033[0m", 3, 4)
+    while int(companyID) < 1 or len(companyID) != 4:
+        companyID = inputbox("\033[1;32m 请输入企业编号（4位数字）: \033[0m", 3, 4)
+    incount =  inputbox("\033[1;32m 请输入需要生成的条形码数量（数字）: \033[0m", 1, 0)
+    while not incount.isdigit() or int(incount) < 1:
+        incount = inputbox("\033[1;32m 请输入需要生成的条形码数量（数字）: \033[0m", 1, 0)
+    mkdir(".\\barcode")
+    for j in range(int(incount)):
+        randfir = ""
+        for i in range(5):
+            randfir = randfir + str(random.choice(number))
+        barcode = str(countryID) + str(companyID) + str(randfir)
+        #caculate the check bit
+        print(barcode)
+        even_sum = int(barcode[1])+int(barcode[3])+int(barcode[5])+int(barcode[7])+int(barcode[9])+int(barcode[11])
+        odd_sum = int(barcode[0])+int(barcode[2])+int(barcode[4])+int(barcode[6])+int(barcode[8])+int(barcode[10])
+        checkbit = int((10-(even_sum*3+odd_sum)%10)%10)
+        barcode = barcode + str(checkbit)
 
+        encoder = EAN13Encoder(barcode)
+        encoder.save(".\\barcode\\" + barcode + ".png")
 
 def scode8(schioce):
     pass
