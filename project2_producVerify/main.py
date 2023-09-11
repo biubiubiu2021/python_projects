@@ -233,7 +233,10 @@ def scode5(schioce):
         ffcode(codeb,codea,"no",schioce)
 
 def scode6(schioce):
-    pass
+    default_dir = r"..\\files" #设置默认打开的文件名
+    file_path = tkinter.filedialog.askopenfilename(filetypes=[("Txt files","*.txt")],title=u"请选择需要补充的防伪码文件", initialdir=(os.path.expanduser(default_dir)))
+    codeList=openfile(file_path)
+    print(codeList)
 
 
 def scode7(schioce):
