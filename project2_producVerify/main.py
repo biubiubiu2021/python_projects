@@ -221,6 +221,7 @@ def ffcode(scount, typestr, ismessage, schoice):
                      str(letterOne[int(randsec[2]):9])) + "\n"
         randstr.append(letterTwo)
     wfile(randstr, typestr + "scode" + str(schoice) + '.txt', ismessage, "生成焓数据分析功能的防伪码统计总共：", ".\\files")
+
 def scode5(schioce):
     default_dir = f".\\files\\batch_configuration.text"
     filepath = tkinter.filedialog.askopenfilename(filetypes=[("Text files","*.text")], title = u"请选择智能批处理文件：", initialdir=(os.path.expanduser(default_dir)))
@@ -235,8 +236,51 @@ def scode5(schioce):
 def scode6(schioce):
     default_dir = r"..\\files" #设置默认打开的文件名
     file_path = tkinter.filedialog.askopenfilename(filetypes=[("Txt files","*.txt")],title=u"请选择需要补充的防伪码文件", initialdir=(os.path.expanduser(default_dir)))
+    root.withdraw()
     codeList=openfile(file_path)
+
+    codeList = codeList.split("\n")
+    codeList.remove("")  #如果文件中没有空行，则会报错，可以前面增加检查有没有，或者增加try/expect
     print(codeList)
+    strset = codeList[0] # 读取一个防伪码，并从读取到的防伪码中获取原来的字母标志信息
+    print(strset)
+    remove_digits= strset.maketrans("","",digits) #string.maketrans 创建删除数字的字符映射转换表
+                                                  # If there is a third argument, it must be a string, whose characters will be mapped to None in the result.
+                                                  #'666424A47B9C'  ---> {48: None, 49: None, 50: None, 51: None, 52: None, 53: None, 54: None, 55: None, 56: None, 57: None}
+    print(remove_digits)
+    res_letters= strset.translate(remove_digits) #根据字符映射转换表删除该防伪码中的数字，获取到所有字母信息，
+    print(res_letters)
+    new_res_letter = list(res_letters)
+    letter0 = new_res_letter[0]
+    letter1 = new_res_letter[1]
+    letter2 = new_res_letter[2]
+    new_res_letter = letter0 + letter1 + letter2
+    print("--------->", new_res_letter)
+
+    card = set(codeList) # 将原来的防伪码都存到集合变量card中
+    tkinter.messagebox.showinfo("提示：", "原始防伪码总计： " + str(len(card)))
+    root.withdraw()
+
+    incount = inputbox("请输入需要补充防伪码的数量： ", 1, 0)
+    for j in range(int(incount)*2):  #最大值按输入生成量的2倍生成补充防伪码，防止新生成的与旧的重复导致不足
+        randfir = random.sample(number, 3)  #随机生成3位不重复数字
+        randsec = sorted(randfir)                #排序, d对应要插入的3个字母的位置
+        addcount = len(card)                   #记录集合中防伪码的总数量
+        strone = ""                            #清空存储单挑防伪码的变量
+        for i in range(9):
+            strone = strone + random.choice(number)  #生成9位随机数字，
+
+        newstring = strone[0:int(randsec[0])] + letter0 +strone[int(randsec[0]):int(randsec[1])] + letter1 + strone[int(randsec[1]):int(randsec[2])] + letter2 + strone[int(randsec[2]):9] + "\n"
+        card.add(newstring)  #添加新生成的防伪码到集合, 若添加到集合成功，则表示新生成的防伪码没有与原来重复的
+
+        if len(card) > addcount: #集合长度变长了，说明添加进集合成功，说明新生成的防伪码OK
+            randstr.append(newstring) # 将新生成的OK的防伪码添加进防伪列表
+            addcount = len(card) # 重置计数器位增加长度后的集合长度
+
+        if len(randstr) >= int(incount): # 所有防伪码合计的数量满足补充防伪码的数量要求了
+            print(randstr)
+            break
+    wfile(randstr, new_res_letter + "ncode" + str(schioce) + '.txt', "", "补充后的防伪码数量总计为：", ".\\files")
 
 
 def scode7(schioce):
