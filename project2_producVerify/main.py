@@ -310,12 +310,36 @@ def scode7(schioce):
         encoder.save(".\\barcode\\" + barcode + ".png")
 
 def scode8(schioce):
-    pass
+    incpunt = inputbox("\033[1;32m 请输入需要生成的二维码数量（数字）: \033[0m", 1, 0)
+    while int(incpunt) == 0:
+        inputbox("\033[1;32m 请输入需要生成的条形码数量（数字）: \033[0m", 1, 0)
+    mkdir(".\\qrcode")
+    for j in range(int(incpunt)):
+        randfir = ""
+        for i in range(12):
+            randfir = randfir + str(random.choice(number))
+
+        encoder = qrcode.make(randfir)
+        encoder.save(".\\qrcode\\" + randfir + ".png")
+
+
 
 
 def scode9(schioce):
-    pass
+    default_dir = r"lottery.ini"
+    file_path = tkinter.filedialog.askopenfilename(filetypes=[("INI file", "*.ini"),("Text file", "*.txt")], title=u"请选择包含抽奖号码的抽奖文件：", initialdir=(os.path.expanduser(default_dir)))
+    codeList = openfile(file_path)
+    codeList = codeList.split("\n")
 
+    incount = inputbox("\033[1;32m 请输入需要抽奖的数量（数字）: \033[0m", 1, 0)
+    while int(incount) == 0 or len(codeList) < int(incount):
+        incount = inputbox("\033[1;32m 请输入需要抽奖的数量（数字）: \033[0m", 1, 0)
+
+    randstr = random.sample(codeList, int(incount))
+    for i in range(int(incount)):
+        wardData = randstr[i].replace('[',"").replace(']','')
+        wardData = randstr[i].replace('(', "").replace(')', '')
+        print("中奖者是---->", wardData)
 
 def mainmenu():
     print("""\033[1;35m
