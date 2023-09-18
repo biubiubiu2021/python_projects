@@ -29,14 +29,14 @@ def print_checkerboard(checkerboard):
         print()
     print(' ------------------------------------------ \033[0m')
 
-def msg(flag):
-    #print_checkerboard()
-    if (flag == 1):
+def msg(checkerboard):
+    print_checkerboard(checkerboard)
+    if (flagNum == 1):
         print('\033[32m *棋胜利！  ***\033[0m')
     else:
         print('\033[32m o棋胜利！  ***\033[0m')
 
-def check(x,y, checkboard): #x,y is the coordinate of the chessman
+def check(x,y, checkboard,finish): #x,y is the coordinate of the chessman
     x=int(x)
     y=int(y)
     if (y-4 >= 0):
@@ -45,28 +45,31 @@ def check(x,y, checkboard): #x,y is the coordinate of the chessman
                 and checkboard[x][y-3] == flagch
                 and checkboard[x][y-4] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
+
     if (y+4<=9):
         if (checkboard[x][y + 1] == flagch
                 and checkboard[x][y + 2] == flagch
                 and checkboard[x][y + 3] == flagch
                 and checkboard[x][y + 4] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
+
     if  (x-4 >= 0):
         if (checkboard[x-1][y] == flagch
                 and checkboard[x-2][y] == flagch
                 and checkboard[x-3][y] == flagch
                 and checkboard[x-4][y] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
+
     if  (x+4 <= 9):
         if (checkboard[x+1][y] == flagch
                 and checkboard[x+2][y] == flagch
                 and checkboard[x+3][y] == flagch
                 and checkboard[x+4][y] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
 
     if  (x-4 >= 0 and y -4 >=0):
         if (checkboard[x-1][y-1] == flagch
@@ -74,7 +77,7 @@ def check(x,y, checkboard): #x,y is the coordinate of the chessman
                 and checkboard[x-3][y-3] == flagch
                 and checkboard[x-4][y-4] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
 
     if  (x+4 <= 9 and y -4 >=0):
         if (checkboard[x+1][y-1] == flagch
@@ -82,7 +85,7 @@ def check(x,y, checkboard): #x,y is the coordinate of the chessman
                 and checkboard[x+3][y-3] == flagch
                 and checkboard[x+4][y-4] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
 
     if  (x-4 >= 0 and y +4 <=9):
         if (checkboard[x-1][y+1] == flagch
@@ -90,7 +93,7 @@ def check(x,y, checkboard): #x,y is the coordinate of the chessman
                 and checkboard[x-3][y+3] == flagch
                 and checkboard[x-4][y+4] == flagch):
             finish = True
-            return finish
+            msg(checkboard)
 
     if  (x+4 <= 0 and y +4 <=9):
         if (checkboard[x+1][y+1] == flagch
@@ -98,16 +101,16 @@ def check(x,y, checkboard): #x,y is the coordinate of the chessman
                 and checkboard[x+3][y+3] == flagch
                 and checkboard[x+4][y+4] == flagch):
             finish = True
-            return finish
 
+            msg(checkboard)
 
 def change_player(flagNum):
     if (flagNum == 1):
         flagch = "*"
-        print('\033[1;37;45 请player1 * 输入棋子坐标（例如A1）: \033[0m', end=" ")
+        print('\033[1;30;41m 请player1 * 输入棋子坐标（例如A1）: \033[0m', end=" ")
     else:
         flagch = "o"
-        print('\033[1;37;45 请player2 o 输入棋子坐标（例如A1）: \033[0m', end=" ")
+        print('\033[1;30;41m 请player2 o 输入棋子坐标（例如A1）: \033[0m', end=" ")
 
     flagNum *= -1
 
@@ -116,4 +119,30 @@ def change_player(flagNum):
 if __name__ == '__main__' :
     c = init_checkerboard()
     print_checkerboard(c)
-    msg(1)
+    finish = False
+    flagNum = 1
+    flagch = "*"
+    x=0
+    y = 0
+    while not finish:
+        print_checkerboard(c)
+        change_player(flagNum)
+        str = input()
+        ch = str[0]
+        x = ord(ch) -65
+        y = int(str[1]) -1
+        if (x<0 or x>9 or y<0 or y>9):
+            print('\033[1;37;45 坐标输入有误，请重新输入： \033[0m', end=" ")
+            continue
+            # 判断坐标上是否有棋子
+        if (c[x][y] == '-'):
+            if (flagNum == 1):A1
+                c[x][y] = '*'
+            else:
+                c[x][y] = 'o'
+        else:
+            print('\033[31m******您输入位置已经有其他棋子，请重新输入！\033[0m')
+            continue
+        check(x,y,c,finish)
+        flagNum *= -1
+        #msg(c)
