@@ -1,4 +1,4 @@
-import tkinter_dryrun as tk
+import tkinter as tk
 import time
 
 class Todo(tk.Tk):
