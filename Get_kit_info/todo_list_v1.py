@@ -19,8 +19,8 @@ class Todo(tk.Tk):
         print("----->",self.tasks)
         #todo1.pack(side=tk.BOTTOM)
 
-        for task in self.tasks: #使用一个for循环来将所有的task 打包在页面底部，使用X 参数来让水平自动填充
-            task.pack(side=tk.BOTTOM, fill=tk.X)
+        # for task in self.tasks: #使用一个for循环来将所有的task 打包在页面底部，使用X 参数来让水平自动填充
+        #     task.pack(side=tk.TOP, fill=tk.X)
 
         self.task_create = tk.Text(self, height=3, bg="white", fg="black") #创建一个text 输入框，默认高度改成3
         self.task_create.pack(side=tk.BOTTOM, fill = tk.X)#打包到页面底部
@@ -29,6 +29,8 @@ class Todo(tk.Tk):
         self.bind("<Return>", self.add_task) #绑定回车键，回车键按下调用add_task 函数， 注意： 这里函数名不能带（），不然就成了函数的返回值了
         self.color_schemes = [{"bg":"lightgrey", "fg":"black"},{"bg":"grey","fg":"white"}] #定义主题列表，主题里是两个字典，对应两种主题
 
+        for task in self.tasks: #使用一个for循环来将所有的task 打包在页面底部，使用X 参数来让水平自动填充
+            task.pack(side=tk.TOP, fill=tk.X)
 
     def add_task(self, event=None):
         task_text = self.task_create.get(1.0, tk.END).strip()#get 方法获取task_create的输入，参数定义获取多少， 1.0 表示从第一个字符开始，是个索引， END表示到Text窗口的最后， strip 去除行末换行符
@@ -45,6 +47,7 @@ class Todo(tk.Tk):
 
             new_task.pack(side=tk.TOP, fill = tk.X) #打包新创建的task到页面的顶部
             self.tasks.append(new_task)#将新创建的task 加入task list里
+
         self.task_create.delete(1.0, tk.END)#删除文本框里的内容
 
 if __name__ == "__main__":
