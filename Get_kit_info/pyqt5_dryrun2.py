@@ -32,4 +32,4 @@ class Icon(QWidget):  # 继承QWidget 这个基类， 并定义ICON新类
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = Icon()
-sys.exit(app.exec_())
+    sys.exit(app.exec_())
