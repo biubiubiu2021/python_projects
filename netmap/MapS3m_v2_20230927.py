@@ -41,7 +41,7 @@ def mount_netDrive(path):
         lebelList = get_netDriveLebel()
         for i in netDriverLebel:
             if i not in lebelList:
-                cmd = f"net use {i} {path} /user:ccr\caifulai My@414500 /p:yes"
+                cmd = f"net use {i} {path} /user:ccr\caifulai My@920118 /p:yes"
                 print("\033[1;35;48m Setting the S3M PATH!  \033[0m")
                 restr = os.popen(cmd).read()
                 if "The command completed successfully" in restr:
