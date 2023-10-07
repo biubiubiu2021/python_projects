@@ -38,7 +38,7 @@ class Example(QMainWindow):
 
         newAct = QAction(QIcon('new.png'),"Create(&N)", self)
         newAct.setShortcut('Ctrl+N')
-
+        newAct.setStatusTip('新建文件')
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu("Files(&F)")
@@ -49,8 +49,29 @@ class Example(QMainWindow):
         fileMenu.addMenu(saveMenu)
         fileMenu.addSeparator()
         fileMenu.addAction(exitAct)
+
+        #工具栏
+        #各项命令都是在菜单栏当中，但是我们可以把一些常用的命令放在工具栏上，例如新建、打开、保存等等。
+        toolBar = self.addToolBar("tools")
+        toolBar.addAction(newAct)
+        toolBar.addAction(saveAct)
+        toolBar.addAction(saveasAct)
+        toolBar.addAction(exitAct)
+
         self.show()
 
+    #Windows操作系统中任何地方右击鼠标会出现俗称的“右键菜单”，其实就是指上下文菜单。
+    def contextMenuEvent(self,event): #这个函数名是定死的，不能改！这里是重写原来的函数方法，
+        #要使用上下文菜单，我们必须重新实现contextMenuEvent()方法。
+        contentMenu = QMenu(self)
+
+        newAct = contentMenu.addAction("New")
+        saveAct = contentMenu.addAction("save")
+        quitAct = contentMenu.addAction("exit")
+        action = contentMenu.exec_(self.mapToGlobal(event.pos()))
+        #使用exec_()方法显示上下文菜单。 从事件对象获取鼠标指针的坐标。 mapToGlobal()方法将窗口小部件坐标转换为全局屏幕坐标。
+        if action == quitAct:
+            qApp.quit()
 
 if __name__ == '__main__':
     app=QApplication(sys.argv)
