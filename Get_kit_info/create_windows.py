@@ -42,6 +42,8 @@ class Example(QMainWindow):
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu("Files(&F)")
+        virwMenu = menubar.addMenu("View(&V)")
+        aboutMenu = menubar.addMenu("About(&A)")
         #menuBar()方法创建一个菜单栏。 我们使用addMenu()创建文件菜单，并使用addAction()添加操作。
         #在退出、文件后面都增加了“&”这个符号，增加这个符号后，当我们按住“Alt+F”的时候就能快速打开文件这个菜单，同理按住“Alt+E”的时候就能退出了
 
