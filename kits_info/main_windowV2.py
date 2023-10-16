@@ -1,12 +1,65 @@
-from PyQt5.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QInputDialog,QTextBrowser,QTextEdit,QCheckBox, QTableWidget,QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QInputDialog, QTextBrowser, QTextEdit, QCheckBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QDialog
+from PyQt5.QtGui import QColor
 import sys
 from get_all_kits_name import get_all_kits_name
-from Get_kits_detail_single_kit_DICT import get_single_kit_info
+from Get_kits_detail_single_kit_DICT import get_single_kit_info,getKitDetails
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-from Get_kits_detail_compare_2kits_clean import getKitDetails
 import subprocess
 import shlex
+
+class TableWindow(QDialog):
+    def __init__(self, data1, data2, ID1, ID2):
+        super().__init__()
+        self.setWindowTitle(f"Compare 2 kits:                       [{ID1}] ------------------------ VS ------------------------- {ID2}")
+        self.setFixedSize(1000,400)
+        self.table1 = QTableWidget()
+        self.table1.setRowCount(len(data1))
+        self.table1.setColumnCount(2)
+        self.table1.setHorizontalHeaderLabels(["Ingredient", "Version"])
+
+        for row, (ingredient, version) in enumerate(data1.items()):
+            item_ingredient = QTableWidgetItem(ingredient)
+            item_version = QTableWidgetItem(version)
+            self.table1.setItem(row, 0, item_ingredient)
+            self.table1.setItem(row, 1, item_version)
+        self.table1.resizeColumnsToContents()
+        self.table1.resizeRowsToContents()
+
+        self.table2 = QTableWidget()
+        self.table2.setRowCount(len(data2))
+        self.table2.setColumnCount(2)
+        self.table2.setHorizontalHeaderLabels(["Ingredient", "Version"])
+
+        for row, (ingredient, version) in enumerate(data2.items()):
+            item_ingredient = QTableWidgetItem(ingredient)
+            item_version = QTableWidgetItem(version)
+            self.table2.setItem(row, 0, item_ingredient)
+            self.table2.setItem(row, 1, item_version)
+        self.table2.resizeColumnsToContents()
+        self.table2.resizeRowsToContents()
+
+        self.compareTables()
+
+        layout = QHBoxLayout()
+        layout.addWidget(self.table1)
+        layout.addWidget(self.table2)
+        self.setLayout(layout)
+
+    def compareTables(self):
+        for row in range(self.table1.rowCount()):
+            ingredient1 = self.table1.item(row, 0).text()
+            version1 = self.table1.item(row, 1).text()
+
+            ingredient2 = self.table2.item(row, 0).text()
+            version2 = self.table2.item(row, 1).text()
+
+            if ingredient1 == ingredient2 and version1 != version2:
+                self.table1.item(row, 1).setBackground(QColor("red"))
+                self.table2.item(row, 1).setBackground(QColor("red"))
+
+
+
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -14,19 +67,32 @@ class Example(QWidget):
         self.OS = "CENTOS"
 
     def initUI(self):
-        self.setGeometry(2800,500,500,500)
+        self.setGeometry(2800,500,510,600)
         self.setWindowTitle("Check kit ingredients")
 
+        self.table = QTableWidget(self)
+        self.table.setGeometry(20, 80, 500, 370)
+        # Set the table headers
+
+        self.table.setRowCount(15)
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(["Ingredient", "Version"])
+        self.table.setColumnWidth(0, 100)
+        self.table.setColumnWidth(1, 500)
+        for i in range(0,15):
+            self.table.setRowHeight(i, 5)
+
+
         self.label1 = QLabel("Kit Name:", self)
-        self.label1.move(20,40)
+        self.label1.move(20,50)
 
         self.label2 = QLabel("NA", self)
         self.label2.resize(200,12)
-        self.label2.move(80, 40)
+        self.label2.move(80, 50)
 
         self.label3 = QLabel("Newest 5 Kits Name:", self)
         self.label3.resize(200,12)
-        self.label3.move(20, 370)
+        self.label3.move(20, 470)
 
 
 
@@ -62,37 +128,40 @@ class Example(QWidget):
 
 
 
-        self.text = QTextEdit(self)
-        self.text.setGeometry(20,80,100,270)
-        self.text5 = QTextEdit(self)
-        self.text5.setGeometry(120,80,400,270)
+        #self.text = QTextEdit(self)
+        #self.text.setGeometry(20,80,100,270)
+        #self.text5 = QTextEdit(self)
+        #self.text5.setGeometry(120,80,400,270)
 
         self.text2 = QTextEdit("NA", self)
-        self.text2.setGeometry(20, 390,200,100)
+        self.text2.setGeometry(20, 490,200,100)
 
         self.label4 = QLabel("Compare 2 kit:",self)
         self.label4.resize(70,12)
-        self.label4.move(230, 370)
+        self.label4.move(230, 470)
 
         self.text3 = QTextEdit(self)
-        self.text3.setGeometry(230,390,210,20)
+        self.text3.setGeometry(230,490,210,20)
         self.text4 = QTextEdit(self)
-        self.text4.setGeometry(230, 420, 210, 20)
+        self.text4.setGeometry(230, 520, 210, 20)
 
         self.bt2 = QPushButton("Select Kit1", self)
         #self.bt1.resize(105,20)
-        self.bt2.move(420, 390)
+        self.bt2.move(430, 488)
         self.bt3 = QPushButton("Select Kit2", self)
         #self.bt1.resize(65,20)
-        self.bt3.move(420, 420)
+        self.bt3.move(430, 518)
 
         self.bt2.clicked.connect(self.get_kit1)
         self.bt3.clicked.connect(self.get_kit2)
 
-        self.bt4 = QPushButton("Compare", self)
-        self.bt4.move(390,460)
-        self.bt4.clicked.connect(self.compare_2_kits)
+        # self.bt4 = QPushButton("Compare", self)
+        # self.bt4.move(390,560)
+        # self.bt4.clicked.connect(self.compare_2_kits)
 
+        self.button = QPushButton("Compare2", self)
+        self.button.move(390,560)
+        self.button.clicked.connect(self.compare_2kits)
 
 
 
@@ -124,22 +193,23 @@ class Example(QWidget):
         if sender == self.bt1:
 
             text, ok = QInputDialog.getItem(self,"Select kits", "Pls Select a kit:", kits)
-            # 可以输入选择项，待选放到列表中，这里的列表就是sex
+            # 可以输入选择项，待选放到列表中，这里的列表就是kits
             if ok:
                 self.label2.setText(text)
-                self.text.clear()
+                #self.text.clear()
+            else:
+                self.label2.clear()
 
             kitDetail = get_single_kit_info(text)
-            print(kitDetail.keys())
-            #self.text.append(text)
-            self.text.setCurrentFont(QFont("Arial",8))
-            for item in kitDetail.keys():
-                print("--->",item)
-                self.text.append(item)
-            for item in kitDetail.values():
-                print("--->",item)
-                item = "VERSION: " + item
-                self.text5.append(item)
+            print("-=-=-=->",kitDetail)
+        for row, (ingredient, version) in enumerate(kitDetail.items()):
+            item_ingredient = QTableWidgetItem(ingredient)
+            item_version = QTableWidgetItem(version)
+            self.table.setItem(row, 0, item_ingredient)
+            self.table.setItem(row, 1, item_version)
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
+
         #return text
 
     def get_kit1(self):
@@ -218,6 +288,22 @@ class Example(QWidget):
                 print("ingredient: %-*s Version: \033[0;31m%-*s\033[0m  |%-*s" % (20, key, 62, kitDict1[key], 1, ""), "ingredient: %-*s Version: \033[0;31m%-*s\033[0m  |%-*s" % (20, key, 62, kitDict2[key], 20, ""))
 
         #########################
+    def compare_2kits(self):
+        print_list=[]
+        print("------------compare")
+        kitID1 = self.text3.toPlainText()
+        print("************>", kitID1)
+        kitID2 = self.text4.toPlainText()
+        print("************>", kitID2)
+        kitDict1 = get_single_kit_info(kitID1)
+        kitDict2 = get_single_kit_info(kitID2)
+        #kitDict1 = getKitDetails(kitID1)
+        #kitDict2 = getKitDetails(kitID2)
+        print("kit1--->", kitDict1)
+        print("kit2--->", kitDict2)
+
+        window = TableWindow(kitDict1, kitDict2, kitID1, kitID2)
+        window.exec_()
 
     def get_check_box_status1(self):
         if self.checkBox1.checkState() == Qt.Checked:
@@ -250,6 +336,8 @@ class Example(QWidget):
             self.checkBox1.setChecked(False)
             self.checkBox2.setChecked(False)
             self.checkBox3.setChecked(False)
+
+
 
 
 if __name__ =='__main__':
