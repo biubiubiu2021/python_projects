@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QInputDialog, QTextBrowser, QTextEdit, QCheckBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QDialog
 from PyQt5.QtGui import QColor
 import sys
+from PyQt5 import QtCore
 from get_all_kits_name import get_all_kits_name
 from Get_kits_detail_single_kit_DICT import get_single_kit_info,getKitDetails
 from PyQt5.QtGui import QFont
@@ -341,6 +342,7 @@ class Example(QWidget):
 
 
 if __name__ =='__main__':
+    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app=QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
