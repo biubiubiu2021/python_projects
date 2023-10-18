@@ -20,35 +20,10 @@ def url_exists(url):
         print(f"URL doesn't exist: {url}")
         return False
 
-def get_all_kits_name2(OS, platform):
-    print("get all kits name:", OS, platform)
-    urlPath = f"https://ubit-artifactory-ba.intel.com/artifactory/dcg-dea-srvplat-repos/Kits/BHS-GNR-{platform}-{OS}/"
-    #kitAll = urlopen(urlPath)
-    if url_exists(urlPath):
-        print(f"URL exists: {urlPath}")
-    else:
-        print(f"URL does not exist: {urlPath}")
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Warning)
-        msg.setText("URL does not exist")
-        msg.setWindowTitle("URL Error")
-        msg.exec_()
-    kitAll = urlopen(urlPath)
-    kits = kitAll.read().decode('utf-8')
-    kits=kits.split(' ')
-    kitsList=[]
-    for item in kits:
-        if f"BHS-GNR-{platform}-" in item and "-23" in item:
-            #print(item)
-            start=item.find(r'"BHS-')
-            end = item.find(r'/">BHS')
-            kitsList.append(item[(start+1):end])
-    return kitsList
-
 class TableWindow(QDialog):
     def __init__(self, data1, data2, ID1, ID2):
         super().__init__()
-        self.setWindowTitle(f"Compare 2 kits:                       [{ID1}] ------------------------ VS ------------------------- {ID2}")
+        self.setWindowTitle(f"Compare 2 kits:                       [{ID1}] ------------------------ VS ------------------------- [{ID2}]")
         self.setFixedSize(1000,400)
         self.table1 = QTableWidget()
         self.table1.setRowCount(len(data1))
@@ -82,7 +57,17 @@ class TableWindow(QDialog):
         layout.addWidget(self.table1)
         layout.addWidget(self.table2)
         self.setLayout(layout)
+    def compareTables(self):
+        for row in range(self.table1.rowCount()):
+            ingredient1 = self.table1.item(row, 0).text()
+            version1 = self.table1.item(row, 1).text()
 
+            ingredient2 = self.table2.item(row, 0).text()
+            version2 = self.table2.item(row, 1).text()
+
+            if ingredient1 == ingredient2 and version1 != version2:
+                self.table1.item(row, 1).setBackground(QColor("red"))
+                self.table2.item(row, 1).setBackground(QColor("red"))
 
 class TableWindow2(QDialog):
     def __init__(self, data1, data2, data3, data4, data5):
@@ -477,7 +462,7 @@ class Example(QWidget):
         print_list=[]
         print("------------compare")
         kitID1 = self.text3.toPlainText()
-        print("************>", kitID1)
+        print("************>", kitID1, self.platform)
         kitID2 = self.text4.toPlainText()
         print("************>", kitID2)
         kitDict1 = get_single_kit_info(kitID1, self.platform)
