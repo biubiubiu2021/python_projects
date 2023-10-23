@@ -184,7 +184,7 @@ class TableWindow2(QDialog):
                 self.table5.item(row, 1).setForeground(color)
 
     def compareTables2(self):
-        colors = ["red", "blue", "brown", "yellow", "purple"]  # Add more colors if needed
+        colors = ["red", "blue", "brown", "Cyan", "purple"]  # Add more colors if needed
         first_row_color = "green"  # Change this to your preferred color
         for row in range(self.table1.rowCount()):
             ingredients = [
