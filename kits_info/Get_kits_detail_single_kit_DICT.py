@@ -8,6 +8,7 @@ from urllib.error import URLError
 
 
 def get_single_kit_info(kitID, platform):
+    kitXml="NA"
     ingredients = {}
     print("\n\033[1;32mKit Name: %-*s \033[0m" % (40, kitID))
     if "CENTOS" in kitID:
@@ -27,29 +28,65 @@ def get_single_kit_info(kitID, platform):
         ingredientsList = ['IFWI', "BMC", "CPLD", "CPLD_PFR", "RHEL","LAN", "QAT", "SAF", "SAF_Blob", "SGX", "SGXFVT_Tool",
                            "VROC_UEFI", "dlb", "on_demand_agent"]
     print(urlPath)
+    new_path = os.path.dirname(os.path.dirname(urlPath))
+    new_path = new_path.replace("-sh","-ba").replace("-or","-ba")
+    print(new_path)
+
     try:
         kitXml = urlopen(urlPath)
     except URLError:
+        print("++++>XML xist:", kitXml)
+        # msg = QMessageBox()
+        # msg.setIcon(QMessageBox.Warning)
+        # msg.setText(
+        #     f"URL Open Failure, the kits may be deleted! \nkit: {kitID}  \nurl:{urlPath}  \nProgram will exit now!")
+        # msg.setWindowTitle("URL Error")
+        # msg.exec_()
+        # # sys.exit(1)
+
+    if kitXml != "NA":
+
+        #kitXml = urlopen(urlPath)
+        kitContent = kitXml.read().decode('utf-8')
+        #print(kitContent)
+        kitXmlRoot = ET.fromstring(kitContent)
+
+
+        for elem in kitXmlRoot:
+            if elem.get("name") is not None :
+                #print("find a elem with a name info")
+                for item in ingredientsList:
+                    if elem.get("name") == item:
+                       ingredients[item] = elem.attrib['version']
+        print("------->ingredients number:", len(ingredients))
+        #Centos has 14 ingredients
+        #Windows has 11 ingredients
+        #Esxi has 11 ingredients
+        #RHEL has 14 ingredients
+
+        return ingredients, new_path
+    else:
+        print("++++> if XML not exist:", kitXml)
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Warning)
-        msg.setText(f"URL does not exist, the kits may be deleted! \nkit: {kitID}  \nurl:{urlPath}  \nProgram will exit now!")
+        msg.setText(
+            f"URL does not exist, the kits may be deleted!\n \nkit:  {kitID}  \n\nurl:\n{urlPath}  \n\nPlease check the kit!!")
         msg.setWindowTitle("URL Error")
         msg.exec_()
-        sys.exit(1)
+        # sys.exit(1)
+        if "CENTOS" in kitID:
+            ingredients = {'BMC': 'NA', 'CPLD': 'NA', 'CPLD_PFR': 'NA', 'CentOS': 'NA', 'IFWI': 'NA', 'LAN': 'NA', 'QAT': 'NA', 'SAF': 'NA', 'SAF_Blob': 'NA', 'SGX': 'NA', 'SGXFVT_Tool': 'NA', 'VROC_UEFI': 'NA', 'dlb': 'NA', 'on_demand_agent': 'NA'}
 
-    #kitXml = urlopen(urlPath)
-    kitContent = kitXml.read().decode('utf-8')
-    #print(kitContent)
-    kitXmlRoot = ET.fromstring(kitContent)
+        elif "WIN" in kitID:
+            ingredients = {'BMC': 'NA', 'BaseWIM-20H2': 'NA', 'CPLD': 'NA', 'CPLD_PFR': 'NA', 'IFWI': 'NA', 'LAN': 'NA', 'QAT': 'NA', 'SGX': 'NA', 'SGXFVT_Tool': 'NA', 'VROC_UEFI': 'NA', 'on_demand_agent': 'NA'}
 
+        elif "ESXI" in kitID:
+            ingredients = {'BMC': 'bmc_bhs_23.40-0', 'CPLD': 'bhs_gnr_avc_ap_4v0b_v3', 'CPLD_PFR': '652.1', 'IFWI': '2023.41.2.01_0027.d13_bhs_gnr_ap', 'LAN': 'network_drivers_v27.6.1', 'QAT': '2.6.0.91-GNR-U2', 'VMware': 'vmware-vmvisor-auto-installer-8.0u2-p00-11749012-release.x86_64_https', 'VROC_UEFI': '9.0.0.1028'}
 
-    for elem in kitXmlRoot:
-        if elem.get("name") is not None :
-            #print("find a elem with a name info")
-            for item in ingredientsList:
-                if elem.get("name") == item:
-                   ingredients[item] = elem.attrib['version']
-    return ingredients
+        elif "RHEL" in kitID:
+            ingredients = {'BMC': 'NA', 'CPLD': 'NA', 'CPLD_PFR': 'NA', 'CentOS': 'NA', 'IFWI': 'NA', 'LAN': 'NA', 'QAT': 'NA', 'SAF': 'NA', 'SAF_Blob': 'NA', 'SGX': 'NA', 'SGXFVT_Tool': 'NA', 'VROC_UEFI': 'NA', 'dlb': 'NA', 'on_demand_agent': 'NA'}
+
+        return ingredients, new_path
 
 
 def getKitDetails(kitID):
@@ -106,4 +143,4 @@ if __name__ == "__main__":
     kitID3 = "BHS-GNR-SP-RHEL-23.41.7.56"
     #kitID = "BHS-GNR-AP-WIN-23.01.5.231"
     print(get_single_kit_info(kitID3,"SP"))
-    print(getKitDetails(kitID1))
+    #print(getKitDetails(kitID2))
