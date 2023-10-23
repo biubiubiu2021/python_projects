@@ -2,8 +2,8 @@ import requests
 
 login_url = "https://www.mindshare.com/login"
 xml_url = "https://www.mindshare.com/path/to/xml/file.xml"
-username = "ziang.wang@intel.com"
-password = "DCAI-CCE@CXL!"
+username = "666"
+password = "666"
 
 # Create a session object to persist the login session
 session = requests.Session()
