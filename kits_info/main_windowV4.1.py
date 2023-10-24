@@ -300,9 +300,9 @@ class Example(QWidget):
         self.label2 = QLabel(
             '<a href="https://ubit-artifactory-ba.intel.com/artifactory/dcg-dea-srvplat-repos/Kits/" style="text-decoration: underline; color:blue;">Artifactory_Link</a>', self)
         self.label2.setOpenExternalLinks(True)
-        self.label2.setFont(QFont('Arial', 10))
+        self.label2.setFont(QFont('Arial', 8))
         self.label2.setStyleSheet("color:blue")
-        self.label2.resize(200,16)
+        self.label2.resize(250,16)
         self.label2.move(80, 95)
 
         self.table = QTableWidget(self)
