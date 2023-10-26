@@ -441,7 +441,7 @@ class Example(QWidget):
 
         self.display_button2 = QPushButton("Create Minifest XML", self)
         self.display_button2.move(450, 40)  # Adjust the position as needed
-        self.display_button2.clicked.connect(self.displayDictionary)
+        self.display_button2.clicked.connect(self.create_new_xml)
 
         self.show()
 
@@ -714,6 +714,8 @@ class Example(QWidget):
         window = DisplayDictionaryWindow(Singleton.selected_lines)
         window.exec_()
 
+    def create_new_xml(self):
+        print("--->, TO do")
 class DisplayDictionaryWindow(QDialog):
     def __init__(self, data):
         super().__init__()
@@ -738,6 +740,8 @@ class DisplayDictionaryWindow(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(self.table)
         self.setLayout(layout)
+
+
 
 if __name__ =='__main__':
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
