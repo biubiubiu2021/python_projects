@@ -32,7 +32,7 @@ else:
 def enum_windows_callback(hwnd, vnc_windows):
     class_name = win32gui.GetClassName(hwnd)
     window_text = win32gui.GetWindowText(hwnd)
-    if "VNC Viewer" in window_text and not window_text.startswith("VNC Viewer -"):
+    if "VNC Viewer" in window_text and not window_text.startswith("VNC Viewer"):
         # Consider only the part of the title before the first space followed by a hyphen or parenthesis
         title_key = window_text.split(" -")[0].split(" (")[0]
         # If the title_key is not in the dictionary, or the current hwnd is larger and the existing title does not have parentheses, or the current title has parentheses, add/update it

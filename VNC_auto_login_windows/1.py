@@ -4,7 +4,7 @@ import win32gui
 def enum_windows_callback(hwnd, vnc_windows):
     class_name = win32gui.GetClassName(hwnd)
     window_text = win32gui.GetWindowText(hwnd)
-    if ") - VNC Viewer" in window_text:
+    if "VNC Viewer" in window_text:
         vnc_windows.append((hwnd, window_text))
 
 
