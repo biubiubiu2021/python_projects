@@ -20,3 +20,4 @@ for hwnd, window_text in vnc_windows:
     print("Window hwnd:", hwnd)
     print("Window Text:", window_text)
     print("---")
+
